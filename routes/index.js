@@ -47,6 +47,7 @@ router.get('/student-a', function(req, res, next) {
 router.get('/convertfile', function(req, res, next) {	
     var src_path = req.query.src_path;
 
+    var file_name = path.basename(src_path);
     var ext = path.extname(src_path);
 
     var data = {code : 200};
@@ -58,15 +59,29 @@ router.get('/convertfile', function(req, res, next) {
     }
 
     var dest_path = src_path.substring(0, src_path.length - ext.length) + ".pdf";
+    var dest_dir = src_path.substring(0, src_path.length - file_name.length);
 
-    var command = `libreoffice6.4 --headless --convert-to pdf ${src_path}`;
-    exec(command);
+    var command = `libreoffice6.4 --headless --outdir ${dest_dir} --convert-to pdf ${src_path}`;
+    exec(command, (error, stdout, stderr) => {
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr: ${stderr}`);
+
+        var data = {code : 200};
+        data.dest_path = dest_path;
+        data.command = command;    
+           
+        if (error !== null) {
+            data.code = 201;
+            data.error = `exec error: ${error}`;   
+            data.command = command;       
+        } else {
+            data.code = 200;
+           
+        }
+
+        res.send(data);   
+    });    
     
-    var data = {code : 200};
-    data.dest_path = dest_path;
-    data.command = command;
-
-    res.send(data);
 });
 
 

@@ -3,7 +3,7 @@ var router = express.Router();
 const { exec } = require('child_process');
 var sprintf = require("sprintf-js").sprintf,
     vsprintf = require("sprintf-js").vsprintf;
-    
+
 const fs = require('fs');
 var path = require('path');
 
@@ -76,8 +76,6 @@ router.get('/convertfile', function(req, res, next) {
         var data = {code : 200};
         data.dest_path = dest_path;
         data.command = command;    
-
-        
            
         if (error !== null) {
             data.code = 201;
@@ -87,6 +85,8 @@ router.get('/convertfile', function(req, res, next) {
             data.code = 200;
            
         }
+
+        console.log(JSON.stringify(data));
 
         res.send(data);   
     });    

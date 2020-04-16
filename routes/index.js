@@ -59,9 +59,9 @@ router.get('/convertfile', function(req, res, next) {
     }
 
     var dest_path = src_path.substring(0, src_path.length - ext.length) + ".pdf";
-    var dest_dir = src_path.substring(0, src_path.length - file_name.length);
+    var dest_dir = src_path.substring(0, src_path.length - file_name.length - 1);
 
-    var command = `libreoffice6.4 --headless --outdir ${dest_dir} --convert-to pdf ${src_path}`;
+    var command = `libreoffice6.4 --headless --convert-to pdf --outdir ${dest_dir} ${src_path}`;
     exec(command, (error, stdout, stderr) => {
         console.log(`stdout: ${stdout}`);
         console.log(`stderr: ${stderr}`);

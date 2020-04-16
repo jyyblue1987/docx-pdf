@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const { exec } = require('child_process');
-
+var sprintf = require("sprintf-js").sprintf,
+    vsprintf = require("sprintf-js").vsprintf;
+    
 const fs = require('fs');
 var path = require('path');
 

@@ -64,15 +64,18 @@ router.get('/convertfile', function(req, res, next) {
     var command = `libreoffice6.4 --headless --convert-to pdf --outdir ${dest_dir} ${src_path}`;
 
     console.log(command);
-    console.log(dest_path);
-    console.log(dest_dir);
     exec(command, (error, stdout, stderr) => {
+        var command_perm = sprintf('sudo chown %s:%s %s', 'simplesigning', 'simplesigning', dest_path);
+        exec(command_perm);
+
         console.log(`stdout: ${stdout}`);
         console.log(`stderr: ${stderr}`);
 
         var data = {code : 200};
         data.dest_path = dest_path;
         data.command = command;    
+
+        
            
         if (error !== null) {
             data.code = 201;
